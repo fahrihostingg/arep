@@ -3,167 +3,270 @@
 <head>
 <meta charset="UTF-8">
 <title>Arif Fahmi</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
 *{
+margin:0;
+padding:0;
 box-sizing:border-box;
 }
 
 body{
-font-family:"Poppins",sans-serif;
-background:linear-gradient(135deg,#141e30,#243b55);
-min-height:100vh;
+font-family:Poppins,sans-serif;
+height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
+color:white;
+overflow:hidden;
+background:#0a0a0a;
+}
+
+/* STAR BACKGROUND */
+
+body::before{
+content:"";
+position:absolute;
+width:200%;
+height:200%;
+background:url("https://www.transparenttextures.com/patterns/stardust.png");
+animation:stars 60s linear infinite;
+opacity:0.25;
+}
+
+@keyframes stars{
+from{transform:translateY(0);}
+to{transform:translateY(-1000px);}
+}
+
+/* CONTAINER */
+
+.container{
+position:relative;
+width:340px;
+z-index:2;
 }
 
 /* CARD */
 
 .card{
-width:340px;
+background:rgba(255,255,255,0.05);
 backdrop-filter:blur(15px);
-background:rgba(255,255,255,0.08);
 border-radius:20px;
-box-shadow:0 20px 40px rgba(0,0,0,0.5);
-overflow:hidden;
-color:white;
+padding:30px;
 text-align:center;
-animation:fade 1.2s ease;
+box-shadow:0 0 30px rgba(0,0,0,0.7);
+animation:fade 1s;
 }
 
 @keyframes fade{
-from{opacity:0; transform:translateY(30px);}
-to{opacity:1; transform:translateY(0);}
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
 }
 
-.card-header{
-padding:30px 20px 10px 20px;
-}
-
-.card-avatar{
-width:110px;
-height:110px;
+.avatar{
+width:100px;
+height:100px;
 border-radius:50%;
-border:4px solid rgba(255,255,255,0.3);
+border:3px solid #00ffd5;
 object-fit:cover;
 margin-bottom:10px;
+box-shadow:0 0 20px #00ffd5;
 }
 
-.card-fullname{
-font-size:24px;
-font-weight:600;
-margin:5px 0;
-}
-
-.card-jobtitle{
+.subtitle{
 font-size:13px;
-opacity:0.8;
-}
-
-/* CONTENT */
-
-.card-content{
-padding:20px;
-font-size:14px;
-opacity:0.9;
-}
-
-.card-content p{
-margin:8px 0;
+opacity:0.7;
 }
 
 /* SOCIAL */
 
-.card-social{
+.social{
 margin-top:15px;
 }
 
-.card-social a{
-margin:0 10px;
-font-size:22px;
+.social a{
 color:white;
+font-size:20px;
+margin:0 8px;
 transition:0.3s;
 }
 
-.card-social a:hover{
+.social a:hover{
 color:#00ffd5;
-transform:scale(1.2);
-text-shadow:0 0 10px #00ffd5;
+transform:scale(1.3);
 }
 
-/* BUTTON */
+/* NAV */
 
-.card-buttons{
+.nav{
+margin-top:20px;
 display:flex;
-border-top:1px solid rgba(255,255,255,0.1);
+gap:8px;
 }
 
-.card-buttons button{
+.nav button{
 flex:1;
-padding:14px;
+padding:10px;
 border:none;
-background:transparent;
+border-radius:8px;
+background:#111;
 color:white;
-font-weight:500;
 cursor:pointer;
 transition:0.3s;
 }
 
-.card-buttons button:hover{
-background:rgba(255,255,255,0.15);
+.nav button:hover{
+background:#00ffd5;
+color:black;
+}
+
+/* CONTENT */
+
+.page{
+margin-top:20px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(10px);
+padding:20px;
+border-radius:15px;
+animation:fade 0.7s;
+}
+
+.page p{
+margin:8px 0;
+font-style:italic;
+}
+
+/* MUSIC BUTTON */
+
+.music-btn{
+margin-top:15px;
+padding:8px 14px;
+border:none;
+border-radius:20px;
+background:#00ffd5;
+color:black;
+cursor:pointer;
+font-size:12px;
 }
 
 </style>
 </head>
 
-<body onclick="exec()">
+<body onclick="startMusic()">
+
+<div class="container">
 
 <div class="card">
 
-<div class="card-header">
-<img class="card-avatar" src="https://telegra.ph/file/91f95074f25269deb0dc7.jpg">
-<h1 class="card-fullname">Arif Fahmi</h1>
-<h2 class="card-jobtitle">Arep Galau</h2>
-</div>
+<img class="avatar" src="https://telegra.ph/file/91f95074f25269deb0dc7.jpg">
 
-<div class="card-content">
-<p>@Arif</p>
-<p>Tetaplah Senyum Walaupun Sedang Sedih</p>
-<p>- Aslinya Orang yg suka galau</p>
+<h2>Arif Fahmi</h2>
+<p class="subtitle">Arep Galau</p>
 
-<div class="card-social">
+<div class="social">
 <a href="https://wa.me/601172590364"><i class="fab fa-whatsapp"></i></a>
 <a href="https://instagram.com/rulshz"><i class="fab fa-instagram"></i></a>
 <a href="https://github.com/fahrihostingg"><i class="fab fa-github"></i></a>
 <a href="https://youtube.com/@rulshzf"><i class="fab fa-youtube"></i></a>
 </div>
+
+<div class="nav">
+<button onclick="go('/')">HOME</button>
+<button onclick="go('/about')">ABOUT</button>
+<button onclick="go('/contact')">CONTACT</button>
 </div>
 
-<div class="card-buttons">
-<button>HOME</button>
-<button>ABOUT</button>
-<button>CONTACT</button>
-</div>
+<button class="music-btn" onclick="toggleMusic()">Play / Pause Music</button>
 
 </div>
 
-<audio id="audio">
+<div id="content"></div>
+
+</div>
+
+<audio id="music" loop>
 <source src="https://storage.neko.pe/file/Pd8lNw~74AgVto~G9FWo.mp3" type="audio/mp3">
 </audio>
 
 <script>
-function exec(){
-document.getElementById("audio").play();
+
+let started=false
+
+function startMusic(){
+if(!started){
+document.getElementById("music").play()
+started=true
 }
+}
+
+function toggleMusic(){
+const music=document.getElementById("music")
+
+if(music.paused){
+music.play()
+}else{
+music.pause()
+}
+}
+
+function go(path){
+history.pushState({}, "", path)
+loadPage()
+}
+
+function loadPage(){
+
+const path = window.location.pathname
+const content = document.getElementById("content")
+
+if(path === "/about"){
+content.innerHTML = `
+<div class="page">
+<h3>Kata Kata Galau</h3>
+<p>Tetaplah tersenyum walaupun hati sedang hancur.</p>
+<p>Kadang kita kuat bukan sebab tak sakit.</p>
+<p>Tapi sebab kita dah terlalu biasa menahan.</p>
+<p>Ada rindu yang tak pernah sampai.</p>
+<p>Tapi tetap tinggal di hati.</p>
+<p>Yang paling sakit bukan kehilangan.</p>
+<p>Tapi kenangan.</p>
+</div>`
+}
+
+else if(path === "/contact"){
+content.innerHTML = `
+<div class="page">
+<h3>Contact</h3>
+<p>WhatsApp : 01172590364</p>
+<p>Instagram : @rulshz</p>
+<p>GitHub : fahrihostingg</p>
+</div>`
+}
+
+else{
+content.innerHTML = `
+<div class="page">
+<p>Tetaplah Senyum Walaupun Sedang Sedih...</p>
+</div>`
+}
+
+}
+
+loadPage()
+
 </script>
 
 </body>
