@@ -9,6 +9,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<!-- IMPORT FILE CONFIG.JS -->
+<script src="config.js"></script>
+
 <style>
 
 :root {
@@ -58,7 +61,7 @@ body {
   z-index: 10;
 }
 
-/* STABLE GLASS CARD (TAK GERAK/TAK SENGET BILA DISENTUH) */
+/* STABLE GLASS CARD (TETAP STABIL, TAK BERGERAK BILA DISENTUH) */
 .card {
   background: var(--glass);
   backdrop-filter: blur(25px);
@@ -124,7 +127,7 @@ h2 {
   font-weight: 500;
 }
 
-/* SOCIAL ICONS (STABLE TOUCH - TIADA EFFECT TERLOMPAT) */
+/* SOCIAL ICONS (STABLE TOUCH) */
 .social {
   margin: 18px 0;
   display: flex;
@@ -474,14 +477,14 @@ h2 {
     <!-- Dynamic Content Area -->
     <div id="content"></div>
 
-    <!-- Audio Player (Fail Tempatan fahri.mp3) -->
+    <!-- Audio Player -->
     <div class="music-card">
       <div class="music-info">
         <div class="music-disc" id="musicDisc">
           <i class="fas fa-music"></i>
         </div>
         <div>
-          <div class="music-title">Sad Vibe Audio</div>
+          <div class="music-title" id="musicTitleDisplay">Sad Vibe Audio</div>
           <div class="music-sub" id="musicStatus">Klik untuk mainkan</div>
         </div>
       </div>
@@ -493,45 +496,34 @@ h2 {
   </div>
 </div>
 
-<audio id="music" loop>
-  <source src="fahri.mp3" type="audio/mp3">
-</audio>
+<audio id="music" loop></audio>
 
 <script>
 /* ===================================================
-   1. API JSON URL (GANTI LINK NPOINT.IO KORANG DI SINI)
+   1. INETIALIZE CONFIG
    =================================================== */
-const API_URL = 'https://api.npoint.io/830c725041ecb33fc60c';
+const music = document.getElementById("music");
+if (typeof CONFIG !== 'undefined') {
+  music.src = CONFIG.MUSIC_PATH;
+  document.getElementById('musicTitleDisplay').textContent = CONFIG.MUSIC_TITLE;
+}
 
 
 /* ===================================================
-   2. RANDOM QUOTES GALAU SYSTEM (DELAY 7 SAAT)
+   2. RANDOM QUOTES GALAU SYSTEM
    =================================================== */
-const quotesGalau = [
-  "Tetaplah tersenyum walaupun hati sedang hancur lebur.",
-  "Kadang kita kuat bukan sebab tak sakit, tapi sebab dah terlalu biasa menahan.",
-  "Ada rindu yang tak pernah sampai, tapi tetap setia tinggal di dalam hati.",
-  "Yang paling sakit bukan kehilangan, tapi kenangan yang enggan menghilang.",
-  "Aku berpura-pura tidak peduli, padahal dalam diam aku selalu memperhatikanmu.",
-  "Lucu ya, dulu kita saling menyapa setiap hari, sekarang seperti tak pernah saling kenal.",
-  "Mungkin aku hanya ditakdirkan untuk menemani, bukan untuk memiliki.",
-  "Jangan terlalu berharap pada manusia, kecewanya takkan pernah ada penawar.",
-  "Aku tetap mendoakan kebahagiaanmu, walaupun kebahagiaan itu bukan lagi bersamaku.",
-  "Sakit yang paling dalam adalah ketika kamu tersenyum hanya untuk menahan air mata.",
-  "Ternyata memaafkan itu mudah, yang sulit adalah mengembalikan rasa percaya yang telah hilang."
-];
-
 let currentQuoteIndex = 0;
 let quoteInterval = null;
 
 function getRandomQuote() {
+  const quotes = (typeof CONFIG !== 'undefined' && CONFIG.QUOTES) ? CONFIG.QUOTES : ["Hati yang sabar akan indah pada waktunya."];
   let newIndex;
   do {
-    newIndex = Math.floor(Math.random() * quotesGalau.length);
-  } while (newIndex === currentQuoteIndex && quotesGalau.length > 1);
+    newIndex = Math.floor(Math.random() * quotes.length);
+  } while (newIndex === currentQuoteIndex && quotes.length > 1);
   
   currentQuoteIndex = newIndex;
-  return quotesGalau[currentQuoteIndex];
+  return quotes[currentQuoteIndex];
 }
 
 function updateQuoteDisplay() {
@@ -549,7 +541,8 @@ function updateQuoteDisplay() {
 
 function startQuoteRotation() {
   stopQuoteRotation();
-  quoteInterval = setInterval(updateQuoteDisplay, 7000);
+  const delay = (typeof CONFIG !== 'undefined' && CONFIG.QUOTE_DELAY) ? CONFIG.QUOTE_DELAY : 7000;
+  quoteInterval = setInterval(updateQuoteDisplay, delay);
 }
 
 function stopQuoteRotation() {
@@ -564,7 +557,8 @@ let pollingInterval = null;
 
 async function fetchMessages() {
   try {
-    const res = await fetch(API_URL);
+    const apiUrl = CONFIG.API_URL;
+    const res = await fetch(apiUrl);
     if (!res.ok) return;
     const data = await res.json();
     
@@ -603,14 +597,19 @@ async function sendMessage(e) {
   const name = nameInput.value.trim() || 'Anon Galau';
   const message = msgInput.value.trim();
   
-  if (!message) return;
+  if (!message) {
+    alert('Sila tulis luahan hati anda terlebih dahulu!');
+    return;
+  }
   
   btn.disabled = true;
   btn.innerText = 'Mengirim...';
 
   try {
+    const apiUrl = CONFIG.API_URL;
+
     // 1. Ambil data lama
-    const res = await fetch(API_URL);
+    const res = await fetch(apiUrl);
     let currentData = await res.json();
     if (!Array.isArray(currentData)) currentData = [];
 
@@ -626,19 +625,25 @@ async function sendMessage(e) {
       time: formattedTime
     });
 
-    // 4. Simpan semula ke API JSON
-    await fetch(API_URL, {
+    // 4. Simpan semula ke npoint.io
+    const updateRes = await fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(currentData)
     });
 
-    msgInput.value = '';
-    nameInput.value = '';
-    fetchMessages();
+    if (updateRes.ok) {
+      msgInput.value = '';
+      nameInput.value = '';
+      alert('Luahan hati berjaya dihantar!');
+      fetchMessages();
+    } else {
+      alert('Gagal menghantar luahan. Sila semak API_URL.');
+    }
 
   } catch (err) {
-    alert('Gagal hantar mesej. Sila pastikan API_URL betul.');
+    console.error(err);
+    alert('Ralat sambungan: ' + err.message);
   } finally {
     btn.disabled = false;
     btn.innerHTML = '<i class="fas fa-paper-plane"></i> Hantar Luahan';
@@ -648,7 +653,7 @@ async function sendMessage(e) {
 function startPollingMessages() {
   stopPollingMessages();
   fetchMessages();
-  pollingInterval = setInterval(fetchMessages, 4000); // Live update setiap 4 saat
+  pollingInterval = setInterval(fetchMessages, 4000);
 }
 
 function stopPollingMessages() {
@@ -701,19 +706,20 @@ function switchPage(page) {
     startPollingMessages();
 
   } else if (page === 'contact') {
+    const c = (typeof CONFIG !== 'undefined') ? CONFIG.CONTACTS : {};
     content.innerHTML = `
       <div class="page" style="width: 100%;">
         <div class="contact-item">
           <span><i class="fab fa-whatsapp"></i> WhatsApp</span>
-          <strong>01172590364</strong>
+          <strong>${c.whatsapp || '-'}</strong>
         </div>
         <div class="contact-item">
           <span><i class="fab fa-instagram"></i> Instagram</span>
-          <strong>@rulshz</strong>
+          <strong>${c.instagram || '-'}</strong>
         </div>
         <div class="contact-item">
           <span><i class="fab fa-github"></i> GitHub</span>
-          <strong>fahrihostingg</strong>
+          <strong>${c.github || '-'}</strong>
         </div>
       </div>`;
   }
@@ -726,7 +732,6 @@ switchPage('home');
 /* ===================================================
    5. AUDIO PLAYER CONTROL SYSTEM
    =================================================== */
-const music = document.getElementById("music");
 const playIcon = document.getElementById("playIcon");
 const musicDisc = document.getElementById("musicDisc");
 const musicStatus = document.getElementById("musicStatus");
