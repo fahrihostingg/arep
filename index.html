@@ -15,7 +15,7 @@
   --primary: #00ffd5;
   --primary-glow: rgba(0, 255, 213, 0.3);
   --bg-dark: #05070f;
-  --glass: rgba(15, 23, 42, 0.75);
+  --glass: rgba(15, 23, 42, 0.85);
   --glass-border: rgba(255, 255, 255, 0.12);
   --input-bg: rgba(255, 255, 255, 0.05);
 }
@@ -58,7 +58,7 @@ body {
   z-index: 10;
 }
 
-/* STABLE GLASS CARD */
+/* STABLE GLASS CARD (TAK GERAK/TAK SENGET BILA DISENTUH) */
 .card {
   background: var(--glass);
   backdrop-filter: blur(25px);
@@ -70,17 +70,6 @@ body {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 255, 213, 0.08);
   position: relative;
   overflow: hidden;
-}
-
-.card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(0,255,213,0.05) 0%, transparent 70%);
-  pointer-events: none;
 }
 
 /* AVATAR HEADER */
@@ -135,7 +124,7 @@ h2 {
   font-weight: 500;
 }
 
-/* SOCIAL ICONS (STABLE TOUCH - NO SHAKING/JUMPING) */
+/* SOCIAL ICONS (STABLE TOUCH - TIADA EFFECT TERLOMPAT) */
 .social {
   margin: 18px 0;
   display: flex;
@@ -158,11 +147,10 @@ h2 {
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.social a:active, .social a:hover {
+.social a:active {
   background: var(--primary);
   color: #000;
   border-color: var(--primary);
-  box-shadow: 0 0 15px var(--primary-glow);
 }
 
 /* NAVIGATION TABS */
@@ -206,12 +194,6 @@ h2 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 /* QUOTES GALAU STYLING */
@@ -257,10 +239,6 @@ h2 {
   padding: 5px 10px;
 }
 
-.next-quote-btn:active {
-  opacity: 1;
-}
-
 /* GUESTBOOK & LUAHAN HATI FORM */
 .guestbook-box {
   width: 100%;
@@ -290,7 +268,6 @@ h2 {
   font-size: 12px;
   margin-bottom: 8px;
   outline: none;
-  transition: border-color 0.2s ease;
 }
 
 #messageForm input:focus, #messageForm textarea:focus {
@@ -312,7 +289,6 @@ h2 {
   border-radius: 10px;
   cursor: pointer;
   font-size: 12px;
-  transition: background 0.2s ease;
 }
 
 .submit-btn:active {
@@ -453,7 +429,6 @@ h2 {
   align-items: center;
   justify-content: center;
   font-size: 13px;
-  transition: background 0.2s ease;
 }
 
 .music-btn:active {
@@ -524,7 +499,13 @@ h2 {
 
 <script>
 /* ===================================================
-   1. RANDOM QUOTES GALAU SYSTEM (DELAY 7 SAAT)
+   1. API JSON URL (GANTI LINK NPOINT.IO KORANG DI SINI)
+   =================================================== */
+const API_URL = 'https://api.npoint.io/830c725041ecb33fc60c';
+
+
+/* ===================================================
+   2. RANDOM QUOTES GALAU SYSTEM (DELAY 7 SAAT)
    =================================================== */
 const quotesGalau = [
   "Tetaplah tersenyum walaupun hati sedang hancur lebur.",
@@ -568,7 +549,6 @@ function updateQuoteDisplay() {
 
 function startQuoteRotation() {
   stopQuoteRotation();
-  // Delay 7000ms (7 Saat) supaya pelawat sempat membaca
   quoteInterval = setInterval(updateQuoteDisplay, 7000);
 }
 
@@ -578,9 +558,8 @@ function stopQuoteRotation() {
 
 
 /* ===================================================
-   2. GUESTBOOK / LUAHAN HATI LIVE API (JSON POLLING)
+   3. GUESTBOOK / LUAHAN HATI LIVE API
    =================================================== */
-const API_URL = 'api.php';
 let pollingInterval = null;
 
 async function fetchMessages() {
@@ -608,7 +587,7 @@ async function fetchMessages() {
     `).join('');
 
   } catch (err) {
-    console.error('Gagal mengambil pesan:', err);
+    console.error('Gagal mengambil mesej:', err);
   }
 }
 
@@ -621,7 +600,7 @@ async function sendMessage(e) {
   
   if (!msgInput) return;
   
-  const name = nameInput.value.trim();
+  const name = nameInput.value.trim() || 'Anon Galau';
   const message = msgInput.value.trim();
   
   if (!message) return;
@@ -630,23 +609,36 @@ async function sendMessage(e) {
   btn.innerText = 'Mengirim...';
 
   try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, message })
+    // 1. Ambil data lama
+    const res = await fetch(API_URL);
+    let currentData = await res.json();
+    if (!Array.isArray(currentData)) currentData = [];
+
+    // 2. Format waktu
+    const dateNow = new Date();
+    const formattedTime = dateNow.toLocaleDateString('ms-MY', { day: '2-digit', month: 'short' }) + ', ' + 
+                          dateNow.toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit' });
+
+    // 3. Tambah mesej baharu ke atas
+    currentData.unshift({
+      name: name,
+      message: message,
+      time: formattedTime
     });
 
-    const result = await res.json();
-    
-    if (result.status === 'success') {
-      msgInput.value = '';
-      nameInput.value = '';
-      fetchMessages();
-    } else {
-      alert(result.message || 'Gagal menghantar mesej.');
-    }
+    // 4. Simpan semula ke API JSON
+    await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(currentData)
+    });
+
+    msgInput.value = '';
+    nameInput.value = '';
+    fetchMessages();
+
   } catch (err) {
-    alert('Ralat sambungan server.');
+    alert('Gagal hantar mesej. Sila pastikan API_URL betul.');
   } finally {
     btn.disabled = false;
     btn.innerHTML = '<i class="fas fa-paper-plane"></i> Hantar Luahan';
@@ -656,7 +648,7 @@ async function sendMessage(e) {
 function startPollingMessages() {
   stopPollingMessages();
   fetchMessages();
-  pollingInterval = setInterval(fetchMessages, 3000); // Live update setiap 3 saat
+  pollingInterval = setInterval(fetchMessages, 4000); // Live update setiap 4 saat
 }
 
 function stopPollingMessages() {
@@ -665,12 +657,11 @@ function stopPollingMessages() {
 
 
 /* ===================================================
-   3. SPA ROUTER PAGE SWITCHER
+   4. SPA ROUTER PAGE SWITCHER
    =================================================== */
 function switchPage(page) {
   const content = document.getElementById("content");
   
-  // Navigation active state
   document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
   const activeBtn = document.getElementById(`btn-${page}`);
   if (activeBtn) activeBtn.classList.add('active');
@@ -733,7 +724,7 @@ switchPage('home');
 
 
 /* ===================================================
-   4. AUDIO PLAYER CONTROL SYSTEM
+   5. AUDIO PLAYER CONTROL SYSTEM
    =================================================== */
 const music = document.getElementById("music");
 const playIcon = document.getElementById("playIcon");
@@ -776,7 +767,7 @@ function updateAudioUI(isPlaying) {
 
 
 /* ===================================================
-   5. CANVAS STAR PARTICLES BACKGROUND
+   6. CANVAS STAR PARTICLES BACKGROUND
    =================================================== */
 const canvas = document.getElementById('canvas-bg');
 const ctx = canvas.getContext('2d');
