@@ -1,16 +1,16 @@
 // ===================================================
-// TETAPAN MUKTAMAD WEBSITE (CONFIG.JS)
+// TETAPAN WEBSITE (CONFIG.JS)
 // ===================================================
 
 const CONFIG = {
-  // 1. Link API npoint.io korang
-  API_URL: 'https://api.npoint.io/830c725041ecb33fc60c',
+  // Gantikan ID_JSONBLOB_KORANG dengan URL daripada https://jsonblob.com
+  API_URL: 'https://jsonblob.com/019fc8de-7fb8-70b3-8a78-66ddd5f1fc10',
 
-  // 2. Fail Lagu Tempatan
+  // Tetapan Audio (Fail fahri.mp3 diletakkan di folder yang sama)
   MUSIC_PATH: 'fahri.mp3',
   MUSIC_TITLE: 'Sad Vibe Audio',
 
-  // 3. Tetapan Quotes Galau (Masa bertukar dalam milisaat: 7000ms = 7 saat)
+  // Masa pertukaran quotes (7000ms = 7 saat)
   QUOTE_DELAY: 7000,
   QUOTES: [
     "Tetaplah tersenyum walaupun hati sedang hancur lebur.",
@@ -26,7 +26,7 @@ const CONFIG = {
     "Ternyata memaafkan itu mudah, yang sulit adalah mengembalikan rasa percaya yang telah hilang."
   ],
 
-  // 4. Maklumat Perhubungan
+  // Maklumat Perhubungan
   CONTACTS: {
     whatsapp: '01172590364',
     instagram: '@rulshz',
