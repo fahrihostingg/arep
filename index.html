@@ -1,273 +1,661 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 <head>
 <meta charset="UTF-8">
-<title>Arif Fahmi</title>
+<title>Arif Fahmi | Official Profile</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<!-- FontAwesome Icons & Google Fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+:root {
+  --primary: #00ffd5;
+  --primary-glow: rgba(0, 255, 213, 0.4);
+  --gold: #ffd700;
+  --bg-dark: #05070f;
+  --glass: rgba(15, 23, 42, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.12);
 }
 
-body{
-font-family:Poppins,sans-serif;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
-overflow:hidden;
-background:#0a0a0a;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  user-select: none;
 }
 
-/* STAR BACKGROUND */
-
-body::before{
-content:"";
-position:absolute;
-width:200%;
-height:200%;
-background:url("https://www.transparenttextures.com/patterns/stardust.png");
-animation:stars 60s linear infinite;
-opacity:0.25;
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-dark);
+  color: #fff;
+  overflow-x: hidden;
+  perspective: 1000px;
+  padding: 20px 0;
 }
 
-@keyframes stars{
-from{transform:translateY(0);}
-to{transform:translateY(-1000px);}
+/* 3D CANVAS BACKGROUND */
+#canvas-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
 }
 
-/* CONTAINER */
-
-.container{
-position:relative;
-width:340px;
-z-index:2;
+/* MAIN CONTAINER (PERSPECTIVE 3D) */
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  z-index: 10;
+  padding: 15px;
+  perspective: 1000px;
 }
 
-/* CARD */
-
-.card{
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(15px);
-border-radius:20px;
-padding:30px;
-text-align:center;
-box-shadow:0 0 30px rgba(0,0,0,0.7);
-animation:fade 1s;
+/* 3D TILT CARD */
+.card {
+  background: var(--glass);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  padding: 35px 25px;
+  text-align: center;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.8),
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    0 0 30px rgba(0, 255, 213, 0.1);
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(20px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-.avatar{
-width:100px;
-height:100px;
-border-radius:50%;
-border:3px solid #00ffd5;
-object-fit:cover;
-margin-bottom:10px;
-box-shadow:0 0 20px #00ffd5;
+.card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0,255,213,0.08) 0%, transparent 70%);
+  pointer-events: none;
 }
 
-.subtitle{
-font-size:13px;
-opacity:0.7;
+/* AVATAR 3D POP-OUT */
+.avatar-wrapper {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin: 0 auto 18px;
+  transform: translateZ(30px);
 }
 
-/* SOCIAL */
-
-.social{
-margin-top:15px;
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary);
+  box-shadow: 0 0 25px var(--primary-glow);
+  animation: float 4s ease-in-out infinite;
 }
 
-.social a{
-color:white;
-font-size:20px;
-margin:0 8px;
-transition:0.3s;
+.avatar-ring {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border: 2px dashed rgba(0, 255, 213, 0.5);
+  border-radius: 50%;
+  animation: spin 12s linear infinite;
 }
 
-.social a:hover{
-color:#00ffd5;
-transform:scale(1.3);
+@keyframes spin {
+  100% { transform: rotate(360deg); }
 }
 
-/* NAV */
-
-.nav{
-margin-top:20px;
-display:flex;
-gap:8px;
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
-.nav button{
-flex:1;
-padding:10px;
-border:none;
-border-radius:8px;
-background:#111;
-color:white;
-cursor:pointer;
-transition:0.3s;
+/* TYPOGRAPHY */
+h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #fff 30%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transform: translateZ(25px);
 }
 
-.nav button:hover{
-background:#00ffd5;
-color:black;
+.subtitle {
+  font-size: 13px;
+  color: #a0aec0;
+  letter-spacing: 1px;
+  margin-top: 4px;
+  text-transform: uppercase;
+  font-weight: 500;
+  transform: translateZ(20px);
 }
 
-/* CONTENT */
-
-.page{
-margin-top:20px;
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(10px);
-padding:20px;
-border-radius:15px;
-animation:fade 0.7s;
+/* SOCIAL ICONS */
+.social {
+  margin: 22px 0;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  transform: translateZ(25px);
 }
 
-.page p{
-margin:8px 0;
-font-style:italic;
+.social a {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* MUSIC BUTTON */
+.social a:hover {
+  background: var(--primary);
+  color: #000;
+  transform: translateY(-5px) scale(1.15);
+  box-shadow: 0 10px 20px var(--primary-glow);
+}
 
-.music-btn{
-margin-top:15px;
-padding:8px 14px;
-border:none;
-border-radius:20px;
-background:#00ffd5;
-color:black;
-cursor:pointer;
-font-size:12px;
+/* NAVIGATION */
+.nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  transform: translateZ(20px);
+}
+
+.nav button {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav button:hover, .nav button.active {
+  background: linear-gradient(135deg, var(--primary), #00b395);
+  color: #05070f;
+  border-color: var(--primary);
+  box-shadow: 0 5px 15px var(--primary-glow);
+}
+
+/* CONTENT BOX */
+.page {
+  margin-top: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px;
+  border-radius: 16px;
+  text-align: center;
+  transform: translateZ(20px);
+  animation: fadeIn 0.5s ease;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateZ(10px) translateY(10px); }
+  to { opacity: 1; transform: translateZ(20px) translateY(0); }
+}
+
+/* QUOTES GALAU STYLING */
+.quote-box {
+  position: relative;
+  width: 100%;
+}
+
+.quote-icon {
+  font-size: 18px;
+  color: var(--primary);
+  opacity: 0.5;
+  margin-bottom: 8px;
+}
+
+.quote-text {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #e2e8f0;
+  font-style: italic;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.quote-text.fade-out {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.quote-text.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.next-quote-btn {
+  margin-top: 10px;
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 11px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: 0.3s;
+}
+
+.next-quote-btn:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* MUSIC PLAYER CONTROL */
+.music-card {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  padding: 12px 18px;
+  border-radius: 16px;
+  transform: translateZ(25px);
+}
+
+.music-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.music-disc {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #111;
+  border: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--primary);
+}
+
+.music-disc.playing {
+  animation: spin 4s linear infinite;
+}
+
+.music-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.music-sub {
+  font-size: 10px;
+  color: #888;
+}
+
+.music-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: var(--primary);
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: 0.3s;
+  box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.music-btn:hover {
+  transform: scale(1.1);
+}
+
+/* CONTACT LIST */
+.contact-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.contact-item i {
+  color: var(--primary);
 }
 
 </style>
 </head>
 
-<body onclick="startMusic()">
+<body onclick="autoStartAudio()">
+
+<!-- 3D Canvas Background -->
+<canvas id="canvas-bg"></canvas>
 
 <div class="container">
+  <div class="card" id="tiltCard">
 
-<div class="card">
+    <!-- Avatar Header -->
+    <div class="avatar-wrapper">
+      <div class="avatar-ring"></div>
+      <img class="avatar" src="https://telegra.ph/file/91f95074f25269deb0dc7.jpg" alt="Arif Fahmi" onerror="this.src='https://i.postimg.cc/mD3qP4XN/avatar-placeholder.jpg'">
+    </div>
 
-<img class="avatar" src="https://telegra.ph/file/91f95074f25269deb0dc7.jpg">
+    <h2>ARIF FAHMI</h2>
+    <p class="subtitle">Arep Galau • Digital Creator</p>
 
-<h2>Arif Fahmi</h2>
-<p class="subtitle">Arep Galau</p>
+    <!-- Social Links -->
+    <div class="social">
+      <a href="https://wa.me/601172590364" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://instagram.com/rulshz" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://github.com/fahrihostingg" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://youtube.com/@rulshz" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    </div>
 
-<div class="social">
-<a href="https://wa.me/601172590364"><i class="fab fa-whatsapp"></i></a>
-<a href="https://instagram.com/rulshz"><i class="fab fa-instagram"></i></a>
-<a href="https://github.com/fahrihostingg"><i class="fab fa-github"></i></a>
-<a href="https://youtube.com/@rulshzf"><i class="fab fa-youtube"></i></a>
-</div>
+    <!-- Navigation -->
+    <div class="nav">
+      <button id="btn-home" class="active" onclick="switchPage('home')">HOME</button>
+      <button id="btn-about" onclick="switchPage('about')">GALAU</button>
+      <button id="btn-contact" onclick="switchPage('contact')">CONTACT</button>
+    </div>
 
-<div class="nav">
-<button onclick="go('/')">HOME</button>
-<button onclick="go('/about')">ABOUT</button>
-<button onclick="go('/contact')">CONTACT</button>
-</div>
+    <!-- Dynamic SPA Page Content -->
+    <div id="content"></div>
 
-<button class="music-btn" onclick="toggleMusic()">Play / Pause Music</button>
+    <!-- Audio Player -->
+    <div class="music-card">
+      <div class="music-info">
+        <div class="music-disc" id="musicDisc">
+          <i class="fas fa-music"></i>
+        </div>
+        <div>
+          <div class="music-title">Sad Vibe Audio</div>
+          <div class="music-sub" id="musicStatus">Klik untuk mainkan</div>
+        </div>
+      </div>
+      <button class="music-btn" onclick="toggleMusic(event)">
+        <i class="fas fa-play" id="playIcon"></i>
+      </button>
+    </div>
 
-</div>
-
-<div id="content"></div>
-
+  </div>
 </div>
 
 <audio id="music" loop>
-<source src="https://storage.neko.pe/file/Pd8lNw~74AgVto~G9FWo.mp3" type="audio/mp3">
+  <source src="https://storage.neko.pe/file/Pd8lNw~74AgVto~G9FWo.mp3" type="audio/mp3">
 </audio>
 
 <script>
+/* ===================================================
+   1. RANDOM QUOTES GALAU SYSTEM (WITH DELAY TO READ)
+   =================================================== */
+const quotesGalau = [
+  "Tetaplah tersenyum walaupun hati sedang hancur lebur.",
+  "Kadang kita kuat bukan sebab tak sakit, tapi sebab dah terlalu biasa menahan.",
+  "Ada rindu yang tak pernah sampai, tapi tetap setia tinggal di dalam hati.",
+  "Yang paling sakit bukan kehilangan, tapi kenangan yang enggan menghilang.",
+  "Aku berpura-pura tidak peduli, padahal dalam diam aku selalu memperhatikanmu.",
+  "Lucu ya, dulu kita saling menyapa setiap hari, sekarang seperti tak pernah saling kenal.",
+  "Mungkin aku hanya ditakdirkan untuk menemani, bukan untuk memiliki.",
+  "Jangan terlalu berharap pada manusia, kecewanya takkan pernah ada penawar.",
+  "Aku tetap mendoakan kebahagiaanmu, walaupun kebahagiaan itu bukan lagi bersamaku.",
+  "Sakit yang paling dalam adalah ketika kamu tersenyum hanya untuk menahan air mata.",
+  "Ternyata memaafkan itu mudah, yang sulit adalah mengembalikan rasa percaya yang telah hilang."
+];
 
-let started=false
+let currentQuoteIndex = 0;
+let quoteInterval = null;
 
-function startMusic(){
-if(!started){
-document.getElementById("music").play()
-started=true
-}
-}
-
-function toggleMusic(){
-const music=document.getElementById("music")
-
-if(music.paused){
-music.play()
-}else{
-music.pause()
-}
-}
-
-function go(path){
-history.pushState({}, "", path)
-loadPage()
-}
-
-function loadPage(){
-
-const path = window.location.pathname
-const content = document.getElementById("content")
-
-if(path === "/about"){
-content.innerHTML = `
-<div class="page">
-<h3>Kata Kata Galau</h3>
-<p>Tetaplah tersenyum walaupun hati sedang hancur.</p>
-<p>Kadang kita kuat bukan sebab tak sakit.</p>
-<p>Tapi sebab kita dah terlalu biasa menahan.</p>
-<p>Ada rindu yang tak pernah sampai.</p>
-<p>Tapi tetap tinggal di hati.</p>
-<p>Yang paling sakit bukan kehilangan.</p>
-<p>Tapi kenangan.</p>
-</div>`
+function getRandomQuote() {
+  let newIndex;
+  do {
+    newIndex = Math.floor(Math.random() * quotesGalau.length);
+  } while (newIndex === currentQuoteIndex && quotesGalau.length > 1);
+  
+  currentQuoteIndex = newIndex;
+  return quotesGalau[currentQuoteIndex];
 }
 
-else if(path === "/contact"){
-content.innerHTML = `
-<div class="page">
-<h3>Contact</h3>
-<p>WhatsApp : 01172590364</p>
-<p>Instagram : @rulshz</p>
-<p>GitHub : fahrihostingg</p>
-</div>`
+function updateQuoteDisplay() {
+  const quoteEl = document.getElementById("quoteText");
+  if (!quoteEl) return;
+  
+  quoteEl.classList.add("fade-out");
+  
+  setTimeout(() => {
+    quoteEl.textContent = `"${getRandomQuote()}"`;
+    quoteEl.classList.remove("fade-out");
+    quoteEl.classList.add("fade-in");
+  }, 600);
 }
 
-else{
-content.innerHTML = `
-<div class="page">
-<p>Tetaplah Senyum Walaupun Sedang Sedih...</p>
-</div>`
+function startQuoteRotation() {
+  stopQuoteRotation();
+  // Delay 7 saat (7000ms) supaya orang sempat baca dengan tenang
+  quoteInterval = setInterval(updateQuoteDisplay, 7000);
 }
 
+function stopQuoteRotation() {
+  if (quoteInterval) clearInterval(quoteInterval);
 }
 
-loadPage()
+
+/* ===================================================
+   2. PAGE SWITCHER (SPA ROUTER FITUR WORK)
+   =================================================== */
+function switchPage(page) {
+  const content = document.getElementById("content");
+  
+  // Active button style
+  document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(`btn-${page}`).classList.add('active');
+
+  stopQuoteRotation();
+
+  if (page === 'about' || page === 'home') {
+    content.innerHTML = `
+      <div class="page">
+        <div class="quote-box">
+          <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+          <p id="quoteText" class="quote-text">"${getRandomQuote()}"</p>
+          <button class="next-quote-btn" onclick="updateQuoteDisplay()"><i class="fas fa-random"></i> Tukar Quote</button>
+        </div>
+      </div>`;
+    startQuoteRotation();
+  } else if (page === 'contact') {
+    content.innerHTML = `
+      <div class="page" style="text-align: left; width: 100%;">
+        <div class="contact-item">
+          <span><i class="fab fa-whatsapp"></i> WhatsApp</span>
+          <strong>01172590364</strong>
+        </div>
+        <div class="contact-item">
+          <span><i class="fab fa-instagram"></i> Instagram</span>
+          <strong>@rulshz</strong>
+        </div>
+        <div class="contact-item">
+          <span><i class="fab fa-github"></i> GitHub</span>
+          <strong>fahrihostingg</strong>
+        </div>
+      </div>`;
+  }
+}
+
+// Initial load
+switchPage('home');
+
+
+/* ===================================================
+   3. AUDIO PLAYER SYSTEM
+   =================================================== */
+const music = document.getElementById("music");
+const playIcon = document.getElementById("playIcon");
+const musicDisc = document.getElementById("musicDisc");
+const musicStatus = document.getElementById("musicStatus");
+let audioStarted = false;
+
+function autoStartAudio() {
+  if (!audioStarted) {
+    music.play().then(() => {
+      audioStarted = true;
+      updateAudioUI(true);
+    }).catch(() => {});
+  }
+}
+
+function toggleMusic(e) {
+  if (e) e.stopPropagation();
+  if (music.paused) {
+    music.play();
+    audioStarted = true;
+    updateAudioUI(true);
+  } else {
+    music.pause();
+    updateAudioUI(false);
+  }
+}
+
+function updateAudioUI(isPlaying) {
+  if (isPlaying) {
+    playIcon.className = "fas fa-pause";
+    musicDisc.classList.add("playing");
+    musicStatus.textContent = "Sedang Dimainkan...";
+  } else {
+    playIcon.className = "fas fa-play";
+    musicDisc.classList.remove("playing");
+    musicStatus.textContent = "Dipause";
+  }
+}
+
+
+/* ===================================================
+   4. 3D CARD TILT EFFECT (VANILLA INTERACTIVE 3D)
+   =================================================== */
+const card = document.getElementById('tiltCard');
+
+document.addEventListener('mousemove', (e) => {
+  const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+  const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+  card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+});
+
+document.addEventListener('mouseenter', () => {
+  card.style.transition = 'none';
+});
+
+document.addEventListener('mouseleave', () => {
+  card.style.transition = 'transform 0.6s ease';
+  card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+});
+
+
+/* ===================================================
+   5. 3D CANVAS STAR / PARTICLE BACKGROUND
+   =================================================== */
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+
+let stars = [];
+const numStars = 120;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Star {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.z = Math.random() * canvas.width;
+    this.size = Math.random() * 1.8 + 0.5;
+    this.opacity = Math.random() * 0.8 + 0.2;
+    this.speed = Math.random() * 0.6 + 0.2;
+  }
+  update() {
+    this.y -= this.speed;
+    if (this.y < 0) {
+      this.y = canvas.height;
+      this.x = Math.random() * canvas.width;
+    }
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0, 255, 213, ${this.opacity})`;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = '#00ffd5';
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < numStars; i++) {
+  stars.push(new Star());
+}
+
+function animateStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(star => {
+    star.update();
+    star.draw();
+  });
+  requestAnimationFrame(animateStars);
+}
+
+animateStars();
 
 </script>
-
 </body>
 </html>
