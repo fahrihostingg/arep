@@ -638,7 +638,7 @@ async function sendMessage(e) {
       alert('Luahan hati berjaya dihantar!');
       fetchMessages();
     } else {
-      alert('Gagal menghantar luahan. Sila semak API_URL.');
+      alert(`Gagal menghantar (HTTP Status: ${updateRes.status}). Pastikan API_URL bermula dengan https://api.npoint.io/`);
     }
 
   } catch (err) {
@@ -649,6 +649,7 @@ async function sendMessage(e) {
     btn.innerHTML = '<i class="fas fa-paper-plane"></i> Hantar Luahan';
   }
 }
+
 
 function startPollingMessages() {
   stopPollingMessages();
