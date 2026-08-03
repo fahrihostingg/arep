@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- IMPORT FILE CONFIG.JS -->
+<!-- IMPORT TETAPAN CONFIG.JS -->
 <script src="config.js"></script>
 
 <style>
@@ -61,7 +61,7 @@ body {
   z-index: 10;
 }
 
-/* STABLE GLASS CARD (TETAP STABIL, TAK BERGERAK BILA DISENTUH) */
+/* STABLE GLASS CARD (TAK BERGERAK/MELOMPAT BILA DISENTUH) */
 .card {
   background: var(--glass);
   backdrop-filter: blur(25px);
@@ -127,7 +127,7 @@ h2 {
   font-weight: 500;
 }
 
-/* SOCIAL ICONS (STABLE TOUCH) */
+/* SOCIAL ICONS (STABLE TOUCH - TIADA EFEK PERGERAKAN BILA DISENTUH) */
 .social {
   margin: 18px 0;
   display: flex;
@@ -500,7 +500,7 @@ h2 {
 
 <script>
 /* ===================================================
-   1. INETIALIZE CONFIG
+   1. INITIALIZE CONFIG
    =================================================== */
 const music = document.getElementById("music");
 if (typeof CONFIG !== 'undefined') {
@@ -551,7 +551,7 @@ function stopQuoteRotation() {
 
 
 /* ===================================================
-   3. GUESTBOOK / LUAHAN HATI LIVE API
+   3. GUESTBOOK / LUAHAN HATI LIVE API (JSONBLOB PUT)
    =================================================== */
 let pollingInterval = null;
 
@@ -625,10 +625,13 @@ async function sendMessage(e) {
       time: formattedTime
     });
 
-    // 4. Simpan semula ke npoint.io
+    // 4. Simpan semula ke JsonBlob dengan kaedah PUT
     const updateRes = await fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'PUT',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
       body: JSON.stringify(currentData)
     });
 
@@ -638,7 +641,7 @@ async function sendMessage(e) {
       alert('Luahan hati berjaya dihantar!');
       fetchMessages();
     } else {
-      alert(`Gagal menghantar (HTTP Status: ${updateRes.status}). Pastikan API_URL bermula dengan https://api.npoint.io/`);
+      alert(`Gagal menghantar (Status HTTP: ${updateRes.status}). Sila pastikan API_URL JsonBlob adalah betul.`);
     }
 
   } catch (err) {
@@ -649,7 +652,6 @@ async function sendMessage(e) {
     btn.innerHTML = '<i class="fas fa-paper-plane"></i> Hantar Luahan';
   }
 }
-
 
 function startPollingMessages() {
   stopPollingMessages();
