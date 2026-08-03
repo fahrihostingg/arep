@@ -2,7 +2,7 @@
 <html lang="ms">
 <head>
 <meta charset="UTF-8">
-<title>Arif Fahmi | Official Profile</title>
+<title>Arif Fahmi | Official Profile & Luahan Hati</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- FontAwesome Icons & Google Fonts -->
@@ -13,11 +13,11 @@
 
 :root {
   --primary: #00ffd5;
-  --primary-glow: rgba(0, 255, 213, 0.4);
-  --gold: #ffd700;
+  --primary-glow: rgba(0, 255, 213, 0.3);
   --bg-dark: #05070f;
-  --glass: rgba(15, 23, 42, 0.65);
+  --glass: rgba(15, 23, 42, 0.75);
   --glass-border: rgba(255, 255, 255, 0.12);
+  --input-bg: rgba(255, 255, 255, 0.05);
 }
 
 * {
@@ -25,7 +25,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
-  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -36,11 +36,10 @@ body {
   background-color: var(--bg-dark);
   color: #fff;
   overflow-x: hidden;
-  perspective: 1000px;
-  padding: 20px 0;
+  padding: 20px 10px;
 }
 
-/* 3D CANVAS BACKGROUND */
+/* BACKGROUND CANVAS ANIMATION */
 #canvas-bg {
   position: fixed;
   top: 0;
@@ -51,31 +50,24 @@ body {
   pointer-events: none;
 }
 
-/* MAIN CONTAINER (PERSPECTIVE 3D) */
+/* MAIN CONTAINER */
 .container {
   position: relative;
   width: 100%;
-  max-width: 420px;
+  max-width: 430px;
   z-index: 10;
-  padding: 15px;
-  perspective: 1000px;
 }
 
-/* 3D TILT CARD */
+/* STABLE GLASS CARD */
 .card {
   background: var(--glass);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   border: 1px solid var(--glass-border);
   border-radius: 28px;
-  padding: 35px 25px;
+  padding: 30px 22px;
   text-align: center;
-  box-shadow: 
-    0 20px 50px rgba(0, 0, 0, 0.8),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2),
-    0 0 30px rgba(0, 255, 213, 0.1);
-  transform-style: preserve-3d;
-  transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 255, 213, 0.08);
   position: relative;
   overflow: hidden;
 }
@@ -87,17 +79,16 @@ body {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(0,255,213,0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0,255,213,0.05) 0%, transparent 70%);
   pointer-events: none;
 }
 
-/* AVATAR 3D POP-OUT */
+/* AVATAR HEADER */
 .avatar-wrapper {
   position: relative;
-  width: 110px;
-  height: 110px;
-  margin: 0 auto 18px;
-  transform: translateZ(30px);
+  width: 105px;
+  height: 105px;
+  margin: 0 auto 15px;
 }
 
 .avatar {
@@ -106,8 +97,7 @@ body {
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--primary);
-  box-shadow: 0 0 25px var(--primary-glow);
-  animation: float 4s ease-in-out infinite;
+  box-shadow: 0 0 20px var(--primary-glow);
 }
 
 .avatar-ring {
@@ -116,241 +106,274 @@ body {
   left: -6px;
   right: -6px;
   bottom: -6px;
-  border: 2px dashed rgba(0, 255, 213, 0.5);
+  border: 2px dashed rgba(0, 255, 213, 0.4);
   border-radius: 50%;
-  animation: spin 12s linear infinite;
+  animation: spin 15s linear infinite;
 }
 
 @keyframes spin {
   100% { transform: rotate(360deg); }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
 /* TYPOGRAPHY */
 h2 {
   font-family: 'Cinzel', serif;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
   letter-spacing: 2px;
   background: linear-gradient(135deg, #fff 30%, var(--primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  transform: translateZ(25px);
 }
 
 .subtitle {
-  font-size: 13px;
+  font-size: 12px;
   color: #a0aec0;
   letter-spacing: 1px;
   margin-top: 4px;
   text-transform: uppercase;
   font-weight: 500;
-  transform: translateZ(20px);
 }
 
-/* SOCIAL ICONS */
+/* SOCIAL ICONS (STABLE TOUCH - NO SHAKING/JUMPING) */
 .social {
-  margin: 22px 0;
+  margin: 18px 0;
   display: flex;
   justify-content: center;
-  gap: 15px;
-  transform: translateZ(25px);
+  gap: 12px;
 }
 
 .social a {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--glass-border);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 17px;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.social a:hover {
+.social a:active, .social a:hover {
   background: var(--primary);
   color: #000;
-  transform: translateY(-5px) scale(1.15);
-  box-shadow: 0 10px 20px var(--primary-glow);
+  border-color: var(--primary);
+  box-shadow: 0 0 15px var(--primary-glow);
 }
 
-/* NAVIGATION */
+/* NAVIGATION TABS */
 .nav {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   margin-top: 15px;
-  transform: translateZ(20px);
 }
 
 .nav button {
   flex: 1;
-  padding: 10px 12px;
+  padding: 10px 6px;
   border: 1px solid var(--glass-border);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.04);
   color: #cbd5e1;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.nav button:hover, .nav button.active {
-  background: linear-gradient(135deg, var(--primary), #00b395);
+.nav button:active, .nav button.active {
+  background: var(--primary);
   color: #05070f;
   border-color: var(--primary);
-  box-shadow: 0 5px 15px var(--primary-glow);
+  box-shadow: 0 0 12px var(--primary-glow);
 }
 
-/* CONTENT BOX */
+/* PAGE DISPLAY AREA */
 .page {
-  margin-top: 20px;
-  background: rgba(0, 0, 0, 0.3);
+  margin-top: 18px;
+  background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 20px;
+  padding: 18px;
   border-radius: 16px;
   text-align: center;
-  transform: translateZ(20px);
-  animation: fadeIn 0.5s ease;
   min-height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  animation: fadeIn 0.4s ease;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateZ(10px) translateY(10px); }
-  to { opacity: 1; transform: translateZ(20px) translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* QUOTES GALAU STYLING */
 .quote-box {
-  position: relative;
   width: 100%;
 }
 
 .quote-icon {
-  font-size: 18px;
+  font-size: 16px;
   color: var(--primary);
-  opacity: 0.5;
-  margin-bottom: 8px;
+  opacity: 0.6;
+  margin-bottom: 6px;
 }
 
 .quote-text {
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.6;
   color: #e2e8f0;
   font-style: italic;
-  min-height: 48px;
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.6s ease;
 }
 
 .quote-text.fade-out {
   opacity: 0;
-  transform: translateY(-8px);
 }
 
 .quote-text.fade-in {
   opacity: 1;
-  transform: translateY(0);
 }
 
 .next-quote-btn {
-  margin-top: 10px;
+  margin-top: 8px;
   background: transparent;
   border: none;
   color: var(--primary);
   font-size: 11px;
   cursor: pointer;
-  opacity: 0.7;
-  transition: 0.3s;
+  opacity: 0.8;
+  padding: 5px 10px;
 }
 
-.next-quote-btn:hover {
+.next-quote-btn:active {
   opacity: 1;
-  text-decoration: underline;
 }
 
-/* MUSIC PLAYER CONTROL */
-.music-card {
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--glass-border);
-  padding: 12px 18px;
-  border-radius: 16px;
-  transform: translateZ(25px);
-}
-
-.music-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+/* GUESTBOOK & LUAHAN HATI FORM */
+.guestbook-box {
+  width: 100%;
   text-align: left;
 }
 
-.music-disc {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #111;
-  border: 2px solid var(--primary);
+.guestbook-title {
+  font-size: 13px;
+  color: var(--primary);
+  margin-bottom: 2px;
+  font-weight: 600;
+}
+
+.guestbook-sub {
+  font-size: 10.5px;
+  color: #a0aec0;
+  margin-bottom: 12px;
+}
+
+#messageForm input, #messageForm textarea {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 9px 12px;
+  color: #fff;
+  font-size: 12px;
+  margin-bottom: 8px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+#messageForm input:focus, #messageForm textarea:focus {
+  border-color: var(--primary);
+}
+
+#messageForm textarea {
+  resize: none;
+  height: 60px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 9px;
+  background: var(--primary);
+  color: #000;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s ease;
+}
+
+.submit-btn:active {
+  background: #00d6b3;
+}
+
+/* LIVE MESSAGES LIST */
+.messages-list {
+  margin-top: 14px;
+  max-height: 200px;
+  overflow-y: auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 4px;
+  width: 100%;
+}
+
+.messages-list::-webkit-scrollbar {
+  width: 4px;
+}
+.messages-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 213, 0.3);
+  border-radius: 4px;
+}
+
+.msg-card {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid var(--primary);
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+}
+
+.msg-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+
+.msg-name {
+  font-weight: 600;
   color: var(--primary);
 }
 
-.music-disc.playing {
-  animation: spin 4s linear infinite;
+.msg-time {
+  font-size: 9.5px;
+  color: #718096;
 }
 
-.music-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: #fff;
+.msg-body {
+  color: #cbd5e1;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
-.music-sub {
-  font-size: 10px;
+.loading-msg {
+  font-size: 11px;
   color: #888;
-}
-
-.music-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: none;
-  background: var(--primary);
-  color: #000;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  transition: 0.3s;
-  box-shadow: 0 0 12px var(--primary-glow);
-}
-
-.music-btn:hover {
-  transform: scale(1.1);
+  text-align: center;
+  width: 100%;
 }
 
 /* CONTACT LIST */
@@ -359,15 +382,82 @@ h2 {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 8px 12px;
+  padding: 10px 12px;
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 8px;
-  margin-bottom: 6px;
+  border-radius: 10px;
+  margin-bottom: 8px;
   font-size: 12px;
+  border: 1px solid var(--glass-border);
 }
 
 .contact-item i {
   color: var(--primary);
+}
+
+/* MUSIC PLAYER CONTROL */
+.music-card {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  padding: 10px 15px;
+  border-radius: 16px;
+}
+
+.music-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+
+.music-disc {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #111;
+  border: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--primary);
+}
+
+.music-disc.playing {
+  animation: spin 4s linear infinite;
+}
+
+.music-title {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.music-sub {
+  font-size: 9.5px;
+  color: #888;
+}
+
+.music-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--primary);
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  transition: background 0.2s ease;
+}
+
+.music-btn:active {
+  background: #00d6b3;
 }
 
 </style>
@@ -375,11 +465,11 @@ h2 {
 
 <body onclick="autoStartAudio()">
 
-<!-- 3D Canvas Background -->
+<!-- Canvas Background -->
 <canvas id="canvas-bg"></canvas>
 
 <div class="container">
-  <div class="card" id="tiltCard">
+  <div class="card">
 
     <!-- Avatar Header -->
     <div class="avatar-wrapper">
@@ -401,11 +491,12 @@ h2 {
     <!-- Navigation -->
     <div class="nav">
       <button id="btn-home" class="active" onclick="switchPage('home')">HOME</button>
-      <button id="btn-about" onclick="switchPage('about')">GALAU</button>
+      <button id="btn-quotes" onclick="switchPage('quotes')">QUOTES</button>
+      <button id="btn-guestbook" onclick="switchPage('guestbook')">LUAHAN</button>
       <button id="btn-contact" onclick="switchPage('contact')">CONTACT</button>
     </div>
 
-    <!-- Dynamic SPA Page Content -->
+    <!-- Dynamic Content Area -->
     <div id="content"></div>
 
     <!-- Audio Player -->
@@ -433,7 +524,7 @@ h2 {
 
 <script>
 /* ===================================================
-   1. RANDOM QUOTES GALAU SYSTEM (WITH DELAY TO READ)
+   1. RANDOM QUOTES GALAU SYSTEM (DELAY 7 SAAT)
    =================================================== */
 const quotesGalau = [
   "Tetaplah tersenyum walaupun hati sedang hancur lebur.",
@@ -477,7 +568,7 @@ function updateQuoteDisplay() {
 
 function startQuoteRotation() {
   stopQuoteRotation();
-  // Delay 7 saat (7000ms) supaya orang sempat baca dengan tenang
+  // Delay 7000ms (7 Saat) supaya pelawat sempat membaca
   quoteInterval = setInterval(updateQuoteDisplay, 7000);
 }
 
@@ -487,18 +578,107 @@ function stopQuoteRotation() {
 
 
 /* ===================================================
-   2. PAGE SWITCHER (SPA ROUTER FITUR WORK)
+   2. GUESTBOOK / LUAHAN HATI LIVE API (JSON POLLING)
+   =================================================== */
+const API_URL = 'api.php';
+let pollingInterval = null;
+
+async function fetchMessages() {
+  try {
+    const res = await fetch(API_URL);
+    if (!res.ok) return;
+    const data = await res.json();
+    
+    const listEl = document.getElementById('messagesList');
+    if (!listEl) return;
+    
+    if (!Array.isArray(data) || data.length === 0) {
+      listEl.innerHTML = '<p class="loading-msg">Belum ada luahan. Jadilah yang pertama!</p>';
+      return;
+    }
+    
+    listEl.innerHTML = data.map(msg => `
+      <div class="msg-card">
+        <div class="msg-header">
+          <span class="msg-name">${msg.name || 'Anon Galau'}</span>
+          <span class="msg-time">${msg.time || ''}</span>
+        </div>
+        <div class="msg-body">${msg.message}</div>
+      </div>
+    `).join('');
+
+  } catch (err) {
+    console.error('Gagal mengambil pesan:', err);
+  }
+}
+
+async function sendMessage(e) {
+  e.preventDefault();
+  
+  const nameInput = document.getElementById('senderName');
+  const msgInput = document.getElementById('senderMsg');
+  const btn = document.getElementById('submitBtn');
+  
+  if (!msgInput) return;
+  
+  const name = nameInput.value.trim();
+  const message = msgInput.value.trim();
+  
+  if (!message) return;
+  
+  btn.disabled = true;
+  btn.innerText = 'Mengirim...';
+
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, message })
+    });
+
+    const result = await res.json();
+    
+    if (result.status === 'success') {
+      msgInput.value = '';
+      nameInput.value = '';
+      fetchMessages();
+    } else {
+      alert(result.message || 'Gagal menghantar mesej.');
+    }
+  } catch (err) {
+    alert('Ralat sambungan server.');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Hantar Luahan';
+  }
+}
+
+function startPollingMessages() {
+  stopPollingMessages();
+  fetchMessages();
+  pollingInterval = setInterval(fetchMessages, 3000); // Live update setiap 3 saat
+}
+
+function stopPollingMessages() {
+  if (pollingInterval) clearInterval(pollingInterval);
+}
+
+
+/* ===================================================
+   3. SPA ROUTER PAGE SWITCHER
    =================================================== */
 function switchPage(page) {
   const content = document.getElementById("content");
   
-  // Active button style
+  // Navigation active state
   document.querySelectorAll('.nav button').forEach(btn => btn.classList.remove('active'));
-  document.getElementById(`btn-${page}`).classList.add('active');
+  const activeBtn = document.getElementById(`btn-${page}`);
+  if (activeBtn) activeBtn.classList.add('active');
 
   stopQuoteRotation();
+  stopPollingMessages();
 
-  if (page === 'about' || page === 'home') {
+  if (page === 'home' || page === 'quotes') {
     content.innerHTML = `
       <div class="page">
         <div class="quote-box">
@@ -508,9 +688,30 @@ function switchPage(page) {
         </div>
       </div>`;
     startQuoteRotation();
+
+  } else if (page === 'guestbook') {
+    content.innerHTML = `
+      <div class="page">
+        <div class="guestbook-box">
+          <div class="guestbook-title"><i class="fas fa-envelope-open-text"></i> Luahan Hati Anonim</div>
+          <div class="guestbook-sub">Tulis sesuatu... Terus muncul live di semua peranti!</div>
+
+          <form id="messageForm" onsubmit="sendMessage(event)">
+            <input type="text" id="senderName" placeholder="Nama / Anonim (Opsional)" maxlength="20">
+            <textarea id="senderMsg" placeholder="Luahkan isi hati anda di sini..." required maxlength="250"></textarea>
+            <button type="submit" class="submit-btn" id="submitBtn"><i class="fas fa-paper-plane"></i> Hantar Luahan</button>
+          </form>
+
+          <div class="messages-list" id="messagesList">
+            <p class="loading-msg">Memuatkan luahan hati...</p>
+          </div>
+        </div>
+      </div>`;
+    startPollingMessages();
+
   } else if (page === 'contact') {
     content.innerHTML = `
-      <div class="page" style="text-align: left; width: 100%;">
+      <div class="page" style="width: 100%;">
         <div class="contact-item">
           <span><i class="fab fa-whatsapp"></i> WhatsApp</span>
           <strong>01172590364</strong>
@@ -527,12 +728,12 @@ function switchPage(page) {
   }
 }
 
-// Initial load
+// Default page load
 switchPage('home');
 
 
 /* ===================================================
-   3. AUDIO PLAYER SYSTEM
+   4. AUDIO PLAYER CONTROL SYSTEM
    =================================================== */
 const music = document.getElementById("music");
 const playIcon = document.getElementById("playIcon");
@@ -575,34 +776,12 @@ function updateAudioUI(isPlaying) {
 
 
 /* ===================================================
-   4. 3D CARD TILT EFFECT (VANILLA INTERACTIVE 3D)
-   =================================================== */
-const card = document.getElementById('tiltCard');
-
-document.addEventListener('mousemove', (e) => {
-  const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-  const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-  card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-});
-
-document.addEventListener('mouseenter', () => {
-  card.style.transition = 'none';
-});
-
-document.addEventListener('mouseleave', () => {
-  card.style.transition = 'transform 0.6s ease';
-  card.style.transform = `rotateY(0deg) rotateX(0deg)`;
-});
-
-
-/* ===================================================
-   5. 3D CANVAS STAR / PARTICLE BACKGROUND
+   5. CANVAS STAR PARTICLES BACKGROUND
    =================================================== */
 const canvas = document.getElementById('canvas-bg');
 const ctx = canvas.getContext('2d');
-
 let stars = [];
-const numStars = 120;
+const numStars = 100;
 
 function resizeCanvas() {
   canvas.width = window.innerWidth;
@@ -619,10 +798,9 @@ class Star {
   reset() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
-    this.z = Math.random() * canvas.width;
-    this.size = Math.random() * 1.8 + 0.5;
-    this.opacity = Math.random() * 0.8 + 0.2;
-    this.speed = Math.random() * 0.6 + 0.2;
+    this.size = Math.random() * 1.5 + 0.5;
+    this.opacity = Math.random() * 0.7 + 0.3;
+    this.speed = Math.random() * 0.5 + 0.2;
   }
   update() {
     this.y -= this.speed;
@@ -635,7 +813,7 @@ class Star {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fillStyle = `rgba(0, 255, 213, ${this.opacity})`;
-    ctx.shadowBlur = 8;
+    ctx.shadowBlur = 6;
     ctx.shadowColor = '#00ffd5';
     ctx.fill();
   }
