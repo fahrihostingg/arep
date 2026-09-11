@@ -29,7 +29,7 @@ const CONFIG = {
   // Maklumat Perhubungan
   CONTACTS: {
     whatsapp: '01172590364',
-    instagram: '@rulshz',
+    instagram: '@rulshzx',
     github: 'fahrihostingg'
   }
 };
